@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomic Orbitals Visualization</title>
+
+    <meta http-equiv="hardware-accelerated" content="true">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="container">
+        <canvas id="orbital-canvas"></canvas>
+
+        <div id="controls-panel">
+            <div class="panel-header">
+                <h2 id="orbital-info">Orbital (n,l,m) — count: <span id="points-count">0</span></h2>
+                <button id="toggle-controls">Hide Controls</button>
+            </div>
+
+            <div id="controls-body">
+                <div class="control-group">
+                    <h3>n (1 to 20)</h3>
+                    <div class="slider-container">
+                        <input type="range" id="n-value" min="1" max="7" value="2" step="1">
+                        <span id="n-value-display">2</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h3>l (0 to n-1)</h3>
+                    <div class="slider-container">
+                        <input type="range" id="l-value" min="0" max="1" value="1" step="1">
+                        <span id="l-value-display">1</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h3>m (-l to l)</h3>
+                    <div class="slider-container">
+                        <input type="range" id="m-value" min="-1" max="1" value="1" step="1">
+                        <span id="m-value-display">1</span>
+                    </div>
+                </div>
+
+                <div class="control-group options">
+                    <h3>Options</h3>
+
+                    <div class="slider-container">
+                        <label for="samples-value">Samples 10^</label>
+                        <input type="range" id="samples-value" min="3" max="6" value="5" step="0.1">
+                        <span id="samples-value-display">5</span>
+                    </div>
+
+                    <div class="dropdown-container">
+                        <label for="colormap">Color map</label>
+                        <select id="colormap">
+                            <option value="inferno" selected>Inferno</option>
+                            <option value="viridis">Viridis</option>
+                            <option value="parula">Parula</option>
+                            <option value="turbo">Turbo</option>
+                            <option value="coolwarm">Coolwarm</option>
+                            <option value="twilight">Twilight</option>
+                            <option value="hsl">HSL</option>
+                            <option value="gray">Grayscale</option>
+                        </select>
+                    </div>
+
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="reverse-colormap">
+                        <label for="reverse-colormap">Reverse colormap</label>
+                    </div>
+
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="display-box">
+                        <label for="display-box">Display box</label>
+                    </div>
+
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="auto-rotate" checked>
+                        <label for="auto-rotate">Activate rotation</label>
+                    </div>
+
+                    <button id="reset-camera">Reset camera</button>
+                </div>
+
+                <div class="control-group">
+                    <h3>Appearance</h3>
+
+                    <div class="slider-container">
+                        <label for="background-value">Background</label>
+                        <input type="range" id="background-value" min="0" max="1" value="0.85" step="0.01">
+                        <span id="background-value-display">0.85</span>
+                    </div>
+
+                    <div class="slider-container">
+                        <label for="target-value">Target</label>
+                        <input type="range" id="target-value" min="0" max="1" value="0.5" step="0.01">
+                        <span id="target-value-display">0.5</span>
+                    </div>
+
+                    <div class="slider-container">
+                        <label for="delta-value">Delta</label>
+                        <input type="range" id="delta-value" min="0" max="1" value="0.5" step="0.01">
+                        <span id="delta-value-display">0.5</span>
+                    </div>
+                </div>
+
+                <div class="control-group info">
+                    <h3>Information</h3>
+                    <div class="info-content">
+                        <h4>Scale</h4>
+                        <div class="colormap-scale" id="colormap-scale"></div>
+                        <p id="colormap-info">The adequate colormap for modulus is a sequential one like inferno.</p>
+                    </div>
+                </div>
+
+                <button id="close-controls">Close Controls</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/glMatrix.js"></script>
+
+    <script src="js/colormaps.js"></script>
+    <script src="js/orbitals.js"></script>
+    <script src="js/camera.js"></script>
+    <script src="js/renderer.js"></script>
+
+    <script src="js/main.js"></script>
+
+    <script>
+        console.log('All scripts loaded. Checking for WebGL support...');
+        try {
+            const testCanvas = document.createElement('canvas');
+            const gl = testCanvas.getContext('webgl2') || testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+            if (!gl) {
+                console.error('WebGL not supported by this browser');
+                document.body.innerHTML = '<div style="color: white; padding: 20px;">WebGL is not supported by your browser. Please try a different browser like Chrome or Firefox.</div>';
+            } else {
+                console.log('WebGL is supported!');
+            }
+        } catch (e) {
+            console.error('Error testing WebGL support:', e);
+        }
+    </script>
+</body>
+
+</html>
